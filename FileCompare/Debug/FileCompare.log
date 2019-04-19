@@ -1,24 +1,32 @@
 ﻿  Main.cpp
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(52): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(66): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(54): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(78): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(133): note: 'strcpy' 선언을 참조하십시오.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(68): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(80): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(69): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(81): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(133): note: 'strcpy' 선언을 참조하십시오.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(94): warning C4244: '=': 'std::streamoff'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(86): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(106): warning C4244: '=': 'std::streamoff'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(98): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(133): note: 'strcpy' 선언을 참조하십시오.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(87): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(99): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(124): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(125): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(140): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(144): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(145): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(153): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(154): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(155): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(161): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(168): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(138): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(139): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(155): warning C4996: 'mbstowcs': This function or variable may be unsafe. Consider using mbstowcs_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\stdlib.h(927): note: 'mbstowcs' 선언을 참조하십시오.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(164): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(165): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(174): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(179): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(162): warning C4996: 'mkdir': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _mkdir. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\direct.h(111): note: 'mkdir' 선언을 참조하십시오.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(183): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(133): note: 'strcpy' 선언을 참조하십시오.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(184): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.17763.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(182): warning C4101: 'z' :참조되지 않은 지역 변수입니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(182): warning C4101: 'buf' :참조되지 않은 지역 변수입니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(182): warning C4101: '_buf' :참조되지 않은 지역 변수입니다.
+c:\users\blstrdnr\source\repos\filecompare\filecompare\main.cpp(201): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   FileCompare.vcxproj -> C:\Users\BLSTRDNR\source\repos\FileCompare\Debug\FileCompare.exe

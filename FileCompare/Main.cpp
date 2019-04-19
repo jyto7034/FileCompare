@@ -1,3 +1,10 @@
+//
+//		   File Compare
+//   Enter the folder path
+//   If nothing to compare 
+//       occur the error
+//
+
 #include <windows.h>
 #include <iostream>
 #include <fstream>
@@ -58,16 +65,17 @@ typedef struct FILEDATA
 			}
 			return true;
 		}
-
 		return true;
 	}
 
-	bool MoveTo(FILEDATA SrcFile, const char *DstPath) {
+	static bool MoveTo(FILEDATA SrcFile, const char *DstPath) {
 		std::ofstream File(DstPath, std::ios::binary);
-		if (File.is_open()) {
-			File.write(SrcFile.buf, SrcFile.size);
+		if (!File.is_open()) {
+			return false;
 		}
+		File.write(SrcFile.buf, SrcFile.size);
 		remove(SrcFile.path);
+		File.close();
 		return 0;
 	}
 
@@ -109,6 +117,8 @@ bool Getfile(const char *folderpath, const char *filename, char *&buf, int &file
 	file.seekg(0, std::ios::beg);
 
 	file.read(buf, size);
+
+	file.close();
 	return true;
 }
 
@@ -140,6 +150,9 @@ bool Compare(std::vector<FILEINFO> file, std::vector<FILEINFO> *overlapPaths) {
 				//std::cout << i << " : " << j << std::endl;
 				overlapPaths->push_back(file[i]);
 			}
+			else {
+				return false;
+			}
 		}
 	}
 	return true;
@@ -154,9 +167,9 @@ void conv(const char* text, wchar_t*& buf, int& size) {
 }
 
 
-void DeleteDuplicate(std::vector<FILEINFO> overlapPaths) {
+void DeleteDuplicate(std::vector<FILEINFO> overlapPaths, const char *Path) {
 	FILEINFO _temp;
-	const char*Path = "D:\\Bin";
+	Path = "D:\\Bin";
 	mkdir(Path);
 
 	for (int i = 0; i < overlapPaths.size() - 1; i++) {
@@ -181,7 +194,7 @@ void DeleteDuplicate(std::vector<FILEINFO> overlapPaths) {
 				COPY(Path);
 				strcat(strcat(temp, "\\"), overlapPaths[j].name);
 				std::cout << overlapPaths[j].name << std::endl;
-				if (_temp.MoveTo(overlapPaths[j], temp)) {
+				if (FILEDATA::MoveTo(overlapPaths[j], temp)) {
 					std::cout << "move failed : " << overlapPaths[j].path << std::endl;
 					std::cout << std::endl;
 				}
@@ -203,20 +216,17 @@ void Clear(std::vector<FILEINFO> *fileinfos, char **buf) {
 	delete[] * buf;
 }
 
-class A {
-public:
-	int a;
-};
-
 int main() {
-	char *buf, folderpath[256] = { "C:\\Test" };
+	char *buf, folderpath[256], binPath[256];
 	int filesize, filecnt;
 	std::vector<std::string> fileNames;
 	std::vector<std::string> filepath;
 	std::vector<FILEINFO> fileinfos;
 	std::vector<FILEINFO> overlapPaths;
-	std::cout << "folder path :" << std::endl;
-	//std::cin.getline(folderpath, 256);
+	std::cout << "folder path :";
+	std::cin.getline(binPath, 256);
+	std::cout << std::endl << "bin folder path :";
+	std::cin.getline(folderpath, 256);
 	filecnt = FindFiles(folderpath, fileNames);
 	for (int i = 0; i < filecnt; i++) {
 		if (Getfile(folderpath, fileNames[i].c_str(), buf, filesize, &filepath)) {
@@ -224,12 +234,10 @@ int main() {
 			SelectCode(&file);
 			fileinfos.push_back(file);
 			file.ShowData(i);
-			std::cout << fileinfos[0].path << std::endl;
-			std::cout << fileinfos.size() << std::endl;
 		}
 	}
 	Compare(fileinfos, &overlapPaths);
-	DeleteDuplicate(overlapPaths);
+	DeleteDuplicate(overlapPaths, binPath);
 	Clear(&fileinfos, &buf);
 	return 0;
 }
