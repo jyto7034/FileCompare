@@ -1,7 +1,9 @@
+#include <windows.h>
 #include <iostream>
 #include <fstream>
+#include <direct.h>
+#include <string>
 #include <vector>
-#include <windows.h>
 #include <time.h>
 #include <cstdlib>
 #include <io.h>
@@ -59,6 +61,16 @@ typedef struct FILEDATA
 
 		return true;
 	}
+
+	bool MoveTo(FILEDATA SrcFile, const char *DstPath) {
+		std::ofstream File(DstPath, std::ios::binary);
+		if (File.is_open()) {
+			File.write(SrcFile.buf, SrcFile.size);
+		}
+		remove(SrcFile.path);
+		return 0;
+	}
+
 }FILEINFO;
 
 
@@ -81,11 +93,11 @@ int FindFiles(char path[], std::vector<std::string> &folderNames) {
 }
 
 
-bool Getfile(const char *folderpath, const char *filename, char *&buf, int &filesize, char *&filepath) {
-	static char _filepath[BUFSIZE] = { 0 };
+bool Getfile(const char *folderpath, const char *filename, char *&buf, int &filesize, std::vector<std::string> *filepath) {
+	char _filepath[BUFSIZE] = { 0 };
 	COPY(folderpath);
 	strcat(strcpy(_filepath, strcat(_CONST(temp), "\\")), filename);
-	filepath = _filepath;
+	filepath->push_back(_filepath);
 	std::ifstream file(_filepath, std::ios::binary);
 	if (!file.is_open())
 		return false;
@@ -124,37 +136,61 @@ bool Compare(std::vector<FILEINFO> file, std::vector<FILEINFO> *overlapPaths) {
 	for (int i = 0; i < file.size(); i++) {
 		for (int j = 0; j < file.size(); j++) {
 			if (FILEINFO::Compare(file[i], file[j]) && i != j) {
-				std::cout << file[j].name << std::endl;
-				std::cout << i << " : " << j << std::endl;
+				//std::cout << file[j].name << std::endl;
+				//std::cout << i << " : " << j << std::endl;
 				overlapPaths->push_back(file[i]);
 			}
 		}
 	}
 	return true;
+};
+
+
+void conv(const char* text, wchar_t*& buf, int& size) {
+	size = strlen(text);
+	buf = new wchar_t[size];
+	ZeroMemory(buf, 0);
+	mbstowcs(buf, text, size);
 }
 
 
 void DeleteDuplicate(std::vector<FILEINFO> overlapPaths) {
-	int temp;
+	FILEINFO _temp;
+	const char*Path = "D:\\Bin";
+	mkdir(Path);
+
 	for (int i = 0; i < overlapPaths.size() - 1; i++) {
 		for (int j = 0; j < overlapPaths.size() - i - 1; j++) {
 			if (overlapPaths[j].size > overlapPaths[j + 1].size) {
-				temp = overlapPaths[j].size;
-				overlapPaths[j].size = overlapPaths[j + 1].size;
-				overlapPaths[j + 1].size = temp;
-			}
-		}
-	}
-	for (int i = 0; i < overlapPaths.size(); i++) {
-		for (int j = 0; j < overlapPaths.size() - i; j++) {
-			if (j < overlapPaths.size() && overlapPaths[j].size == overlapPaths[j + 1].size) {
-				overlapPaths.erase(overlapPaths.begin() + j + 1);
+				_temp = overlapPaths[j];
+				overlapPaths[j] = overlapPaths[j + 1];
+				overlapPaths[j + 1] = _temp;
 			}
 		}
 	}
 
 	for (int i = 0; i < overlapPaths.size(); i++) {
-		std::cout << " : " << overlapPaths[i].name << std::endl;
+		std::cout << overlapPaths[i].name << std::endl;
+	}
+
+	std::cout << overlapPaths.size() << std::endl;
+	for (int j = 0; j < overlapPaths.size(); j++) {
+		if (j != overlapPaths.size() - 1) {
+			if (overlapPaths[j].size == overlapPaths[j + 1].size) {
+				wchar_t *buf, *_buf; int z;
+				COPY(Path);
+				strcat(strcat(temp, "\\"), overlapPaths[j].name);
+				std::cout << overlapPaths[j].name << std::endl;
+				if (_temp.MoveTo(overlapPaths[j], temp)) {
+					std::cout << "move failed : " << overlapPaths[j].path << std::endl;
+					std::cout << std::endl;
+				}
+				else {
+					std::cout << "Move " << overlapPaths[j].path << " to ";
+					std::cout << std::endl;
+				}
+			}
+		}
 	}
 }
 
@@ -167,27 +203,33 @@ void Clear(std::vector<FILEINFO> *fileinfos, char **buf) {
 	delete[] * buf;
 }
 
+class A {
+public:
+	int a;
+};
+
 int main() {
-	char *buf, folderpath[256] = { 0 }, *filepath;
+	char *buf, folderpath[256] = { "C:\\Test" };
 	int filesize, filecnt;
 	std::vector<std::string> fileNames;
+	std::vector<std::string> filepath;
 	std::vector<FILEINFO> fileinfos;
 	std::vector<FILEINFO> overlapPaths;
-	std::cout << "folder path :";
-	std::cin.getline(folderpath, 256);
+	std::cout << "folder path :" << std::endl;
+	//std::cin.getline(folderpath, 256);
 	filecnt = FindFiles(folderpath, fileNames);
 	for (int i = 0; i < filecnt; i++) {
-		if (Getfile(folderpath, fileNames[i].c_str(), buf, filesize, filepath)) {
-			FILEINFO file(buf, filepath, fileNames[i].c_str(), filesize);
+		if (Getfile(folderpath, fileNames[i].c_str(), buf, filesize, &filepath)) {
+			FILEINFO file(buf, filepath[i].c_str(), fileNames[i].c_str(), filesize);
 			SelectCode(&file);
 			fileinfos.push_back(file);
 			file.ShowData(i);
+			std::cout << fileinfos[0].path << std::endl;
+			std::cout << fileinfos.size() << std::endl;
 		}
 	}
-
 	Compare(fileinfos, &overlapPaths);
 	DeleteDuplicate(overlapPaths);
 	Clear(&fileinfos, &buf);
-	for (;;);
 	return 0;
 }
