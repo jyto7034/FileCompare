@@ -25,7 +25,7 @@
 
 static int cnt;
 static int msize = 0;
-bool GetFileData(const char *folderpath, const char *filename, char *&buf, int &filesize, std::vector<std::string> *filepath);
+bool GetFileData(const char* folderpath, const char* filename, char*& buf, int& filesize, std::vector<std::string>* filepath);
 
 void gotoxy(int x, int y)
 {
@@ -33,23 +33,23 @@ void gotoxy(int x, int y)
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
-bool Release(char *buf) {
+bool Release(char* buf) {
 	if (buf) return false;
 	buf = nullptr;
 	return true;
 }
 
-bool Release(const char **buf) {
+bool Release(const char** buf) {
 	if (buf == nullptr)	return false;
-	delete[] *buf;
+	delete[] * buf;
 	return true;
 }
 
 typedef struct FILEDATA
 {
-	const char *buf;
-	const char *path;
-	const char *name;
+	const char* buf;
+	const char* path;
+	const char* name;
 	int size, * code;
 
 	FILEDATA() {
@@ -60,7 +60,7 @@ typedef struct FILEDATA
 		size = 0;
 	}
 
-	FILEDATA(const char *buf, const char *path, const char *name, int size) {
+	FILEDATA(const char* buf, const char* path, const char* name, int size) {
 
 		this->path = path;
 		this->buf = buf;
@@ -71,59 +71,57 @@ typedef struct FILEDATA
 
 	void ShowData(int index) {
 		std::cout << std::endl << "################ " << index << " ###############" << std::endl;
+		std::cout << "CodeCnt :" << _msize(this->code) << std::endl;
 		std::cout << "Path :" << this->path << std::endl;
 		std::cout << "Size :" << this->size << std::endl;
 		std::cout << "Name :" << this->name;
 		std::cout << std::endl << "###################################" << std::endl;
 	}
 
-	static bool Compare(FILEDATA* file, FILEDATA* _file) {
-		if (file->size == _file->size) {
-			cout(file->size);
-			cout(_file->size);
-			return true;
-		}
-		if (strcmp(file->name, _file->name) == 0) {
-			cout(file->name);
-			cout(_file->name);
-			return true;
-		}
-		for (int i = 0; i < SIZE(file->code); i++) {
-			if (file->code[i] != _file->code[i]) {
-				cnt++;
-				if (i == SIZE(file->code) - 1) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	static bool MoveTo(FILEDATA SrcFile, const char *DstPath) {
-		char *temp;
-		std::string Path(SrcFile.path);
-		std::vector<std::string> filepath;
-		Path.erase(Path.end() - strlen(SrcFile.name), Path.end());
-		GetFileData(Path.c_str(), SrcFile.name, temp, SrcFile.size, &filepath);
-		SrcFile.buf = temp;
-
-		std::ofstream File(DstPath, std::ios::binary);
-		if (!File.is_open()) {
-			return false;
-		}
-		File.write(SrcFile.buf, SrcFile.size);
-		remove(SrcFile.path);
-
-		Release(temp);
-		Release(&SrcFile.buf);
-		File.close();
-		return 0;
-	}
-
 }FILEINFO;
 
+bool Compare(FILEDATA * file, FILEDATA * _file) {
+	if (file->size == _file->size || strcmp(file->name, _file->name) == 0)
+		return true;
 
-int FindFiles(char path[], std::vector<std::string> &folderNames) {
+	try {
+		for (int i = 0; i < SIZE(file->code); i++) {
+			if (file->code[i] == _file->code[i]) {
+				cnt++;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+	catch (...) {
+		return false;
+	}
+	return false;
+}
+
+bool MoveTo(FILEDATA SrcFile, const char* DstPath) {
+	char* temp;
+	std::string Path(SrcFile.path);
+	std::vector<std::string> filepath;
+	Path.erase(Path.end() - strlen(SrcFile.name), Path.end());
+	GetFileData(Path.c_str(), SrcFile.name, temp, SrcFile.size, &filepath);
+	SrcFile.buf = temp;
+
+	std::ofstream File(DstPath, std::ios::binary);
+	if (!File.is_open()) {
+		return false;
+	}
+	File.write(SrcFile.buf, SrcFile.size);
+	remove(SrcFile.path);
+
+	Release(temp);
+	Release(&SrcFile.buf);
+	File.close();
+	return 0;
+}
+
+int FindFiles(char path[], std::vector<std::string> & folderNames) {
 	COPY(path);
 	_finddata_t fd;
 	long handle = _findfirst(strcat(temp, _CONST("\\*.*")), &fd);
@@ -142,7 +140,7 @@ int FindFiles(char path[], std::vector<std::string> &folderNames) {
 }
 
 
-bool GetFileData(const char *folderpath, const char *filename, char *&buf, int &filesize, std::vector<std::string> *filepath) {
+bool GetFileData(const char* folderpath, const char* filename, char*& buf, int& filesize, std::vector<std::string> * filepath) {
 	char _filepath[BUFSIZE] = { 0 };
 	COPY(folderpath);
 	strcat(strcpy(_filepath, strcat(_CONST(temp), "\\")), filename);
@@ -167,15 +165,17 @@ bool GetFileData(const char *folderpath, const char *filename, char *&buf, int &
 }
 
 
-void SelectCode(FILEINFO *file) {
+void SelectCode(FILEINFO * file) {
 	srand((unsigned int)time(NULL));
 	int codeCnt = 0;
-	try {
-		codeCnt = file->size / DIVIDE;
+
+	if ((file->size / DIVIDE) == 0) {
+		codeCnt = file->size / 15000;
 		file->code = new int[codeCnt];
-	} 
-	catch (...) {
-		codeCnt = file->size / (DIVIDE - 180000);
+	}
+
+	else {
+		codeCnt = file->size / DIVIDE;
 		file->code = new int[codeCnt];
 	}
 
@@ -188,9 +188,8 @@ void SelectCode(FILEINFO *file) {
 bool Compare(std::vector<FILEINFO> *file, std::vector<FILEINFO> *overlapPaths) {
 	for (int i = 0; i < file->size(); i++) {
 		for (int j = 0; j < file->size(); j++) {
-			if (FILEINFO::Compare(&file->at(i), &file->at(j)) && i != j) {
-				std::cout << file->at(i).name << std::endl;
-				std::cout << file->at(j).name << std::endl;
+			if (Compare(&file->at(i), &file->at(j)) && i != j) {
+				std::cout << file->at(i).name << " - " << file->at(j).name << std::endl;
 				std::cout << i << " : " << j << std::endl;
 				overlapPaths->push_back(file->at(i));
 			}
@@ -200,19 +199,10 @@ bool Compare(std::vector<FILEINFO> *file, std::vector<FILEINFO> *overlapPaths) {
 };
 
 
-void conv(const char* text, wchar_t*& buf, int& size) {
-	size = strlen(text);
-	buf = new wchar_t[size];
-	ZeroMemory(buf, 0);
-	mbstowcs(buf, text, size);
-}
-
-
-void DeleteDuplicate(std::vector<FILEINFO> overlapPaths, const char *Path) {
+void DeleteDuplicate(std::vector<FILEINFO> overlapPaths, const char* Path) {
 	FILEINFO _temp;
 	mkdir(Path);
 
-	cout(overlapPaths.size());
 
 	for (int i = 0; i < overlapPaths.size() - 1; i++) {
 		for (int j = 0; j < overlapPaths.size() - i - 1; j++) {
@@ -223,18 +213,17 @@ void DeleteDuplicate(std::vector<FILEINFO> overlapPaths, const char *Path) {
 			}
 		}
 	}
-	cout(overlapPaths.size());
 
 	for (int i = 0; i < overlapPaths.size(); i++) {
 		std::cout << overlapPaths[i].name << std::endl;
 	}
 
-	/*for (int j = 0; j < overlapPaths.size(); j++) {
+	for (int j = 0; j < overlapPaths.size(); j++) {
 		if (j != overlapPaths.size() - 1) {
 			if (overlapPaths[j].size == overlapPaths[j + 1].size) {
 				COPY(Path);
 				strcat(strcat(temp, "\\"), overlapPaths[j].name);
-				if (FILEDATA::MoveTo(overlapPaths[j], temp)) {
+				if (MoveTo(overlapPaths[j], temp)) {
 					std::cout << "move failed : " << overlapPaths[j].path << std::endl;
 				}
 				else {
@@ -242,11 +231,11 @@ void DeleteDuplicate(std::vector<FILEINFO> overlapPaths, const char *Path) {
 				}
 			}
 		}
-	}*/
+	}
 }
 
 int main() {
-	char *buf, folderpath[256] = {"D:\\Pic"}, binPath[256] = {"C:\\te"};
+	char* buf, folderpath[256] = { "D:\\t" }, binPath[256] = { "D:\\bin" };
 	int filesize, filecnt;
 	std::vector<std::string> fileNames;
 	std::vector<std::string> filepath;
@@ -268,7 +257,5 @@ int main() {
 	}
 	Compare(&fileinfos, &overlapPaths);
 	DeleteDuplicate(overlapPaths, binPath);
-	cout(cnt);
-	std::cout << std::endl;
 	return 0;
 }
